@@ -1,0 +1,3 @@
+D:/programming/cpp/avm/cmake-build-debug/CMakeFiles/avm.dir
+D:/programming/cpp/avm/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/programming/cpp/avm/cmake-build-debug/CMakeFiles/rebuild_cache.dir

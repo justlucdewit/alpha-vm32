@@ -73,6 +73,6 @@ mem AVM::CPU::decode() {
 
 void AVM::CPU::step() {
     byte instruction = fetchSingle();
-
+    execute(instruction);
 }
 

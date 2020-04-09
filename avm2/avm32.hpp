@@ -16,7 +16,7 @@ namespace AVM{
         mem r8 = 0; // general purpose register
         mem ip = 0; // instruction pointer
         mem acc = 0; // accumulator
-        std::vector<byte> memory;
+
 
         //fde cycle
         byte fetchSingle();
@@ -26,6 +26,7 @@ namespace AVM{
         void step();
 
     public:
+        std::vector<byte> memory;
         explicit CPU(mem);
     };
 }

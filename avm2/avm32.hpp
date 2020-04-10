@@ -1,5 +1,19 @@
 #pragma once
 #include <vector>
+#include <iostream>
+
+#define NOP 0x00
+#define MOV_LIT_REG 0x01
+#define MOV_REG_REG 0x02
+#define MOV_REG_MEM 0x03
+#define MOV_MEM_REG 0x04
+
+#define ADD 0x10
+#define SUB 0x11
+#define MUL 0x12
+#define DIV 0x13
+
+#define STOP 0xFF
 
 typedef uint16_t mem;
 typedef uint8_t byte;
@@ -14,19 +28,22 @@ namespace AVM{
         mem r6 = 0; // general purpose register
         mem r7 = 0; // general purpose register
         mem r8 = 0; // general purpose register
-        mem ip = 0; // instruction pointer
+        mem ip = -1; // instruction pointer
         mem acc = 0; // accumulator
+        byte stop = 0;
 
 
         //fde cycle
+        mem* getRegister(byte);
         byte fetchSingle();
         mem fetchDouble();
-        mem decode();
         void execute(byte);
-        void step();
 
     public:
         std::vector<byte> memory;
         explicit CPU(mem);
+        void debug();
+        void loadprogram(std::vector<byte>&);
+        void run();
     };
 }

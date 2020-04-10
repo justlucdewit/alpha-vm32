@@ -6,15 +6,17 @@
 
 #IncludeRegexTransform: 
 
-D:/programming/cpp/avm/avm32/avm32.hpp
-iostream
--
+D:/programming/cpp/avm/avm2/avm32.cpp
+avm32.hpp
+D:/programming/cpp/avm/avm2/avm32.hpp
+
+D:/programming/cpp/avm/avm2/avm32.hpp
 vector
 -
-cmath
+iostream
 -
 
 D:/programming/cpp/avm/main.cpp
-avm32/avm32.hpp
-D:/programming/cpp/avm/avm32/avm32.hpp
+avm2/avm32.hpp
+D:/programming/cpp/avm/avm2/avm32.hpp
 

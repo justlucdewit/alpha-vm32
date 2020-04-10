@@ -16,63 +16,89 @@ mem AVM::CPU::fetchDouble() {
 
 void AVM::CPU::execute(byte instruction) {
     switch(instruction){
-        // move litteral into r1
-        case 0x01: {
-            r1 = fetchDouble();
+        // mov lit->reg
+        case MOV_LIT_REG: {
+            mem lit = fetchDouble();
+            *getRegister(fetchSingle()) = lit;
             return;
         }
 
-        // move litteral into r1
-        case 0x02: {
-            r2 = fetchDouble();
+        case MOV_REG_REG: {
+            mem from = *getRegister(fetchSingle());
+            *getRegister(fetchSingle()) = from;
             return;
         }
 
-        // move litteral into r1
-        case 0x03: {
-            r3 = fetchDouble();
+        case MOV_REG_MEM: {//movrm too from
+            byte reg = *getRegister(fetchSingle());
+            memory[fetchDouble()] = reg;
             return;
         }
 
-        case 0x04: {
-            r4 = fetchDouble();
-            return;
-        }
-
-        case 0x05: {
-            r5 = fetchDouble();
-            return;
-        }
-
-        case 0x06: {
-            r6 = fetchDouble();
-            return;
-        }
-
-        case 0x07: {
-            r7 = fetchDouble();
-            return;
-        }
-
-        case 0x08: {
-            r8 = fetchDouble();
+        case MOV_MEM_REG: {//movmr too from
+            mem reg = *getRegister(fetchSingle());
+            reg = memory[fetchDouble()];
             return;
         }
 
         //add r1 and r2
-        case 0x20: {
-            acc = r1+r2;
+        case ADD: {
+            mem reg1 = *getRegister(fetchSingle());
+            mem reg2 = *getRegister(fetchSingle());
+            acc = reg1+reg2;
+            return;
+        }
+
+        case STOP: {
+            stop = 1;
             return;
         }
     }
 }
 
-mem AVM::CPU::decode() {
-    return 0;
+mem *AVM::CPU::getRegister(byte index) {
+    switch (index){
+        case 0x00: return &acc;
+        case 0x01: return &r1;
+        case 0x02: return &r2;
+        case 0x03: return &r3;
+        case 0x04: return &r4;
+        case 0x05: return &r5;
+        case 0x06: return &r6;
+        case 0x07: return &r7;
+        case 0x08: return &r8;
+        case 0x09: return &ip;
+        default: return nullptr;
+    }
 }
 
-void AVM::CPU::step() {
-    byte instruction = fetchSingle();
-    execute(instruction);
+void AVM::CPU::debug(){
+    std::cout << "ip = " << std::uppercase << std::hex << ip << std::endl;
+    std::cout << "acc = " << std::uppercase << std::hex << acc << std::endl;
+    std::cout << "r1 = " << std::uppercase << std::hex << r1 << std::endl;
+    std::cout << "r2 = " << std::uppercase << std::hex << r2 << std::endl;
+    std::cout << "r3 = " << std::uppercase << std::hex << r3 << std::endl;
+    std::cout << "r4 = " << std::uppercase << std::hex << r4 << std::endl;
+    std::cout << "r5 = " << std::uppercase << std::hex << r5 << std::endl;
+    std::cout << "r6 = " << std::uppercase << std::hex << r6 << std::endl;
+    std::cout << "r7 = " << std::uppercase << std::hex << r7 << std::endl;
+    std::cout << "r8 = " << std::uppercase << std::hex << r8 << "\n" << std::endl;
 }
+
+void AVM::CPU::run(){
+    std::cout << "main loop\n";
+    while(!stop){
+        byte instruction = fetchSingle();
+        execute(instruction);
+    }
+}
+
+void AVM::CPU::loadprogram(std::vector<byte>& program) {
+    int i = 0;
+    for (const auto& b : program){
+        memory[i++] = b;
+    }
+}
+
+
 

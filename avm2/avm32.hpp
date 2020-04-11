@@ -13,6 +13,8 @@
 #define MUL 0x12
 #define DIV 0x13
 
+#define JNE 0x20
+
 #define STOP 0xFF
 
 typedef uint16_t mem;

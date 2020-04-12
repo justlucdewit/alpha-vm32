@@ -30,14 +30,15 @@ void AVM::CPU::execute(byte instruction) {
         }
 
         case MOV_REG_MEM: {//movrm too from
-            byte reg = *getRegister(fetchSingle());
-            memory[fetchDouble()] = reg;
+            mem reg = *getRegister(fetchSingle());
+            mem address = fetchDouble();
+            memory[address] = reg;
             return;
         }
 
         case MOV_MEM_REG: {//movmr too from
-            mem reg = *getRegister(fetchSingle());
-            reg = memory[fetchDouble()];
+            mem address = fetchDouble();
+            *getRegister(fetchSingle()) = memory[address];
             return;
         }
 
@@ -52,6 +53,23 @@ void AVM::CPU::execute(byte instruction) {
         case STOP: {
             stop = 1;
             return;
+        }
+
+        case JNE: {
+
+            mem value = fetchDouble();
+            //std::cout << "\n!!going to " << value << " !!\n";
+            if (value != acc){
+                mem adress = fetchDouble();
+
+                ip = adress-1;
+            }
+
+            return;
+        }
+
+        default: {
+            std::cout << "oh noes!";
         }
     }
 }
@@ -73,6 +91,7 @@ mem *AVM::CPU::getRegister(byte index) {
 }
 
 void AVM::CPU::debug(){
+    std::cout << "mem0x100 = " << std::to_string(memory[0x100]) << std::endl;
     std::cout << "ip = " << std::uppercase << std::hex << ip << std::endl;
     std::cout << "acc = " << std::uppercase << std::hex << acc << std::endl;
     std::cout << "r1 = " << std::uppercase << std::hex << r1 << std::endl;
@@ -86,11 +105,19 @@ void AVM::CPU::debug(){
 }
 
 void AVM::CPU::run(){
-    std::cout << "main loop\n";
     while(!stop){
         byte instruction = fetchSingle();
         execute(instruction);
     }
+}
+
+void AVM::CPU::runDebug(){
+    while(!stop){
+        debug();
+        byte instruction = fetchSingle();
+        execute(instruction);
+    }
+    debug();
 }
 
 void AVM::CPU::loadprogram(std::vector<byte>& program) {

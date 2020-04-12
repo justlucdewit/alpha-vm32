@@ -1,7 +1,21 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <string>
 
+// registers
+#define reg_acc 0x00
+#define reg_r1 0x01
+#define reg_r2 0x02
+#define reg_r3 0x03
+#define reg_r4 0x04
+#define reg_r5 0x05
+#define reg_r6 0x06
+#define reg_r7 0x07
+#define reg_r8 0x08
+#define reg_ip 0x09
+
+// instructions
 #define NOP 0x00
 #define MOV_LIT_REG 0x01
 #define MOV_REG_REG 0x02
@@ -47,5 +61,6 @@ namespace AVM{
         void debug();
         void loadprogram(std::vector<byte>&);
         void run();
+        void runDebug();
     };
 }

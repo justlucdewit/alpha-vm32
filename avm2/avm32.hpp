@@ -46,6 +46,8 @@ namespace AVM{
         mem r8 = 0; // general purpose register
         mem ip = -1; // instruction pointer
         mem acc = 0; // accumulator
+        mem sp = 0;  // stack pointer
+        mem fp = 0; // frame pointer
         byte stop = 0;
 
 

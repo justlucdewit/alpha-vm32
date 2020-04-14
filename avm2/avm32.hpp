@@ -58,6 +58,8 @@ namespace AVM{
         mem fp = 0; // frame pointer
         byte stop = 0;
 
+        mem stackFrameSize = 0;
+
 
         // fde cycle
         mem* getRegister(byte);
@@ -66,7 +68,9 @@ namespace AVM{
         void execute(byte);
 
         // helpers
-        void pushToStack(mem);
+        void pushToStackDouble(mem);
+        void pushToStackSepperate(byte, byte);
+        void pushState();
 
     public:
         std::vector<byte> memory;

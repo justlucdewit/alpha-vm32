@@ -16,6 +16,22 @@ mem AVM::CPU::fetchDouble() {
     return num;
 }
 
+void AVM::CPU::pushState(){
+    pushToStackDouble(r1);
+    pushToStackDouble(r2);
+    pushToStackDouble(r3);
+    pushToStackDouble(r4);
+    pushToStackDouble(r5);
+    pushToStackDouble(r6);
+    pushToStackDouble(r7);
+    pushToStackDouble(r8);
+    pushToStackDouble(ip);
+    pushToStackDouble(stackFrameSize+2);
+
+    fp = sp;
+    stackFrameSize = 0;
+}
+
 void AVM::CPU::execute(byte instruction) {
     switch(instruction){
         // mov lit->reg
@@ -71,30 +87,32 @@ void AVM::CPU::execute(byte instruction) {
         }
 
         case PUSH_LIT: {
-            memory[sp] = fetchSingle();
-            memory[sp-1] = fetchSingle();
-            sp-=2;
+            pushToStackSepperate(fetchSingle(), fetchSingle());
             return;
         }
 
         case PUSH_REG: {
-            mem val = *getRegister(fetchSingle());
-            memory[sp] = val >> 8;
-            memory[sp-1] = val;
-            sp-=2;
+            pushToStackDouble(*getRegister(fetchSingle()));
             return;
         }
 
         case POP: {
             sp+=2;
+            stackFrameSize-=2;
             *getRegister(fetchSingle()) = memory[sp]*256 + memory[sp-1];
             return;
         }
 
         case CAL_LIT: {
             mem adress = fetchDouble();
+            pushState();
+            ip = adress;
+        }
 
-
+        case CAL_REG: {
+            mem adress = *getRegister(fetchSingle());
+            pushState();
+            ip = adress;
         }
 
         default: {
@@ -152,15 +170,25 @@ void AVM::CPU::runDebug(){
     debug();
 }
 
-void AVM::CPU::loadprogram(std::vector<byte>& program) {
+void AVM::CPU::loadprogram(std::vector<byte>& program){
     int i = 0;
     for (const auto& b : program){
         memory[i++] = b;
     }
 }
 
-void AVM::CPU::pushToStack(mem val) {
-    
+void AVM::CPU::pushToStackDouble(mem val){
+    memory[sp] = val >> 8;
+    memory[sp-1] = val;
+    sp-=2;
+    stackFrameSize+=2;
+}
+
+void AVM::CPU::pushToStackSepperate(byte val1, byte val2){
+    memory[sp] = val1;
+    memory[sp-1] = val2;
+    sp-=2;
+    stackFrameSize+=2;
 }
 
 

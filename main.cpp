@@ -4,16 +4,17 @@ int main() {
     AVM::CPU cpu(500);
 
     std::vector<byte> prog = {
-        MOV_MEM_REG, 0x01, 0x00, reg_r1,
-        MOV_LIT_REG, 0x00, 0x01, reg_r2,
-        ADD, reg_r1, reg_r2,
-        MOV_REG_MEM, reg_acc, 0x01, 0x00,
-        JNE, 0xFF, 0xFF, 0x00, 0x00,
+        MOV_LIT_REG, 0x12, 0x34, reg_r1,
+        MOV_LIT_REG, 0xAB, 0xCD, reg_r2,
+        PUSH_REG, reg_r1,
+        PUSH_REG, reg_r2,
+        POP, reg_r1,
+        POP, reg_r2,
         STOP
     };
 
     cpu.loadprogram(prog);
-    cpu.run();
+    cpu.runDebug();
 
     return 0;
 }

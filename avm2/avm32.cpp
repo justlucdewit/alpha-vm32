@@ -2,6 +2,8 @@
 
 AVM::CPU::CPU(mem size){
     memory.resize(size);
+    sp = size-2;
+    fp = size-2;
 }
 
 byte AVM::CPU::fetchSingle(){
@@ -68,6 +70,33 @@ void AVM::CPU::execute(byte instruction) {
             return;
         }
 
+        case PUSH_LIT: {
+            memory[sp] = fetchSingle();
+            memory[sp-1] = fetchSingle();
+            sp-=2;
+            return;
+        }
+
+        case PUSH_REG: {
+            mem val = *getRegister(fetchSingle());
+            memory[sp] = val >> 8;
+            memory[sp-1] = val;
+            sp-=2;
+            return;
+        }
+
+        case POP: {
+            sp+=2;
+            *getRegister(fetchSingle()) = memory[sp]*256 + memory[sp-1];
+            return;
+        }
+
+        case CAL_LIT: {
+            mem adress = fetchDouble();
+
+
+        }
+
         default: {
             std::cout << "oh noes!";
         }
@@ -86,22 +115,25 @@ mem *AVM::CPU::getRegister(byte index) {
         case 0x07: return &r7;
         case 0x08: return &r8;
         case 0x09: return &ip;
+        case 0x0A: return &sp;
+        case 0x0B: return &fp;
         default: return nullptr;
     }
 }
 
 void AVM::CPU::debug(){
-    std::cout << "mem0x100 = " << std::to_string(memory[0x100]) << std::endl;
-    std::cout << "ip = " << std::uppercase << std::hex << ip << std::endl;
-    std::cout << "acc = " << std::uppercase << std::hex << acc << std::endl;
-    std::cout << "r1 = " << std::uppercase << std::hex << r1 << std::endl;
-    std::cout << "r2 = " << std::uppercase << std::hex << r2 << std::endl;
-    std::cout << "r3 = " << std::uppercase << std::hex << r3 << std::endl;
-    std::cout << "r4 = " << std::uppercase << std::hex << r4 << std::endl;
-    std::cout << "r5 = " << std::uppercase << std::hex << r5 << std::endl;
-    std::cout << "r6 = " << std::uppercase << std::hex << r6 << std::endl;
-    std::cout << "r7 = " << std::uppercase << std::hex << r7 << std::endl;
-    std::cout << "r8 = " << std::uppercase << std::hex << r8 << "\n" << std::endl;
+    std::cout << "ip  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << ip << std::endl;
+    std::cout << "acc = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right  << std::hex << acc << std::endl;
+    std::cout << "sp  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << sp << std::endl;
+    std::cout << "fp  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << fp << std::endl;
+    std::cout << "r1  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << r1 << std::endl;
+    std::cout << "r2  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << r2 << std::endl;
+    std::cout << "r3  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << r3 << std::endl;
+    std::cout << "r4  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << r4 << std::endl;
+    std::cout << "r5  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << r5 << std::endl;
+    std::cout << "r6  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << r6 << std::endl;
+    std::cout << "r7  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << r7 << std::endl;
+    std::cout << "r8  = 0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::right << std::hex << r8 << "\n" << std::endl;
 }
 
 void AVM::CPU::run(){
@@ -125,6 +157,10 @@ void AVM::CPU::loadprogram(std::vector<byte>& program) {
     for (const auto& b : program){
         memory[i++] = b;
     }
+}
+
+void AVM::CPU::pushToStack(mem val) {
+    
 }
 
 

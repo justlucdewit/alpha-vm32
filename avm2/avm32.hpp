@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 // registers
@@ -14,6 +15,8 @@
 #define reg_r7 0x07
 #define reg_r8 0x08
 #define reg_ip 0x09
+#define reg_sp 0x0A
+#define reg_fp 0x0B
 
 // instructions
 #define NOP 0x00
@@ -21,6 +24,11 @@
 #define MOV_REG_REG 0x02
 #define MOV_REG_MEM 0x03
 #define MOV_MEM_REG 0x04
+#define PUSH_LIT 0x17
+#define PUSH_REG 0x18
+#define POP 0x1A
+#define CAL_LIT 0x5E
+#define CAL_REG 0x5F
 
 #define ADD 0x10
 #define SUB 0x11
@@ -51,11 +59,14 @@ namespace AVM{
         byte stop = 0;
 
 
-        //fde cycle
+        // fde cycle
         mem* getRegister(byte);
         byte fetchSingle();
         mem fetchDouble();
         void execute(byte);
+
+        // helpers
+        void pushToStack(mem);
 
     public:
         std::vector<byte> memory;

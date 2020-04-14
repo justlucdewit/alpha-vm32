@@ -16,6 +16,12 @@ mem AVM::CPU::fetchDouble() {
     return num;
 }
 
+mem AVM::CPU::pop(){
+    sp+=2;
+    stackFrameSize-=2;
+    return memory[sp]*256 + memory[sp-1];
+}
+
 void AVM::CPU::pushState(){
     pushToStackDouble(r1);
     pushToStackDouble(r2);
@@ -30,6 +36,27 @@ void AVM::CPU::pushState(){
 
     fp = sp;
     stackFrameSize = 0;
+}
+
+void AVM::CPU::popState(){
+    sp = fp;
+    stackFrameSize = pop();
+    ip = pop();
+    r8 = pop();
+    r7 = pop();
+    r6 = pop();
+    r5 = pop();
+    r4 = pop();
+    r3 = pop();
+    r2 = pop();
+    r1 = pop();
+
+    mem nArgs = pop();
+    for (unsigned int i = 0; i < nArgs; i++){
+        pop();
+    }
+
+    fp += stackFrameSize;
 }
 
 void AVM::CPU::execute(byte instruction) {
@@ -97,22 +124,28 @@ void AVM::CPU::execute(byte instruction) {
         }
 
         case POP: {
-            sp+=2;
-            stackFrameSize-=2;
-            *getRegister(fetchSingle()) = memory[sp]*256 + memory[sp-1];
+            *getRegister(fetchSingle()) = pop();
             return;
         }
 
         case CAL_LIT: {
+            std::cout << "\nhappened!\n";
             mem adress = fetchDouble();
             pushState();
             ip = adress;
+            return;
         }
 
         case CAL_REG: {
             mem adress = *getRegister(fetchSingle());
             pushState();
             ip = adress;
+            return;
+        }
+
+        case RET: {
+            popState();
+            return;
         }
 
         default: {

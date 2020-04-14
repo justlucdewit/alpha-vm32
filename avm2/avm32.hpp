@@ -24,11 +24,14 @@
 #define MOV_REG_REG 0x02
 #define MOV_REG_MEM 0x03
 #define MOV_MEM_REG 0x04
+
 #define PUSH_LIT 0x17
 #define PUSH_REG 0x18
 #define POP 0x1A
+
 #define CAL_LIT 0x5E
 #define CAL_REG 0x5F
+#define RET 0x70
 
 #define ADD 0x10
 #define SUB 0x11
@@ -70,7 +73,10 @@ namespace AVM{
         // helpers
         void pushToStackDouble(mem);
         void pushToStackSepperate(byte, byte);
+        mem pop();
+
         void pushState();
+        void popState();
 
     public:
         std::vector<byte> memory;

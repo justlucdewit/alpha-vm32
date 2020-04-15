@@ -59,9 +59,9 @@ namespace AVM{
         mem acc = 0; // accumulator
         mem sp = 0;  // stack pointer
         mem fp = 0; // frame pointer
-        byte stop = 0;
+        byte stop = 0; // internal stop register
 
-        mem stackFrameSize = 0;
+        mem stackFrameSize = 0; // internal register
 
 
         // fde cycle

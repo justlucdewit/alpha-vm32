@@ -94,6 +94,13 @@ void AVM::CPU::execute(byte instruction) {
             return;
         }
 
+        case MOV_LIT_MEM: {
+            mem lit = fetchDouble();
+            mem address = fetchDouble();
+            setMemory(address, lit);
+            return;
+        }
+
         //add r1 and r2
         case ADD: {
             mem reg1 = *getRegister(fetchSingle());

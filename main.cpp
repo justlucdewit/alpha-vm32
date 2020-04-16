@@ -2,20 +2,30 @@
 
 class ScreenDevice : public AVM::Device{
 public:
-    void call(mem, mem) override{
-        std::cout << "screenDevice has been called!";
+    void call(mem address, mem value) override{
+        std::cout << (char) value;
     };
 };
 
 int main() {
     AVM::MemoryMapper MM;
     ScreenDevice screen;
-    MM.map(&screen, 0x0300, 0x03FF, true);
+    MM.map(&screen, 0x0300, 0x0300, true);
     AVM::CPU cpu(MM, 60000);
 
     std::vector<byte> prog = {
-        MOV_LIT_REG, 0x03, 0x66, reg_r1,
-        MOV_REG_MEM, reg_r1, 0x03, 0x66,
+        MOV_LIT_MEM, 0x00, 0x48, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x65, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x6C, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x6C, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x6F, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x20, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x57, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x6F, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x72, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x6C, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x64, 0x03, 0x00,
+        MOV_LIT_MEM, 0x00, 0x21, 0x03, 0x00,
         STOP,
     };
 

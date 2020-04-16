@@ -1,6 +1,7 @@
 #include "avm32.hpp"
 
-AVM::CPU::CPU(mem size){
+AVM::CPU::CPU(MemoryMapper memoryMap, int size){
+    memMap = memoryMap;
     memory.resize(size);
     sp = size-2;
     fp = size-2;
@@ -59,6 +60,12 @@ void AVM::CPU::popState(){
     fp += stackFrameSize;
 }
 
+void AVM::CPU::setMemory(mem at, mem val){
+    if (!memMap.checkDevice(at, val)){
+        memory[at] = val;
+    }
+}
+
 void AVM::CPU::execute(byte instruction) {
     switch(instruction){
         // mov lit->reg
@@ -77,7 +84,7 @@ void AVM::CPU::execute(byte instruction) {
         case MOV_REG_MEM: {//movrm too from
             mem reg = *getRegister(fetchSingle());
             mem address = fetchDouble();
-            memory[address] = reg;
+            setMemory(address, reg);
             return;
         }
 
@@ -129,7 +136,6 @@ void AVM::CPU::execute(byte instruction) {
         }
 
         case CAL_LIT: {
-            std::cout << "\nhappened!\n";
             mem adress = fetchDouble();
             pushState();
             ip = adress;

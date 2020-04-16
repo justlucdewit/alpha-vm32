@@ -1,4 +1,5 @@
 #include "avm2/avm32.hpp"
+#include <cmath>
 
 class ScreenDevice : public AVM::Device{
 public:
@@ -7,10 +8,20 @@ public:
     };
 };
 
+class ScreenMatrixDevice : public AVM::Device{
+public:
+    void call(mem address, mem value) override{
+        const mem x = (address % 16) + 1;
+        const mem y = std::floor(address/16)+1;
+        std::cout << "\033[" << y << ";" << x << "H";
+        std::cout << (char) value;
+    };
+};
+
 int main() {
     AVM::MemoryMapper MM;
-    ScreenDevice screen;
-    MM.map(&screen, 0x0300, 0x0300, true);
+    ScreenMatrixDevice screen;
+    MM.map(&screen, 0x0300, 0x03FF, true);
     AVM::CPU cpu(MM, 60000);
 
     std::vector<byte> prog = {

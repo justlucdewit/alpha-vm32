@@ -101,6 +101,17 @@ void AVM::CPU::execute(byte instruction) {
             return;
         }
 
+        case MOV_REG_PTR_REG: {
+            mem value = memory[(*getRegister(fetchSingle()))*2]*256 + memory[(*getRegister(fetchSingle()))*2+1];
+            *getRegister(fetchSingle()) = value;
+            return;
+        }
+
+        case MOV_LIT_OFF_REG: {
+            mem address = fetchDouble() + *getRegister(fetchSingle());// baseAddress + offset
+            *getRegister(fetchSingle()) = address;
+        }
+
         //add r1 and r2
         case ADD: {
             mem reg1 = *getRegister(fetchSingle());

@@ -25,6 +25,8 @@
 #define MOV_REG_MEM 0x03
 #define MOV_MEM_REG 0x04
 #define MOV_LIT_MEM 0x05
+#define MOV_REG_PTR_REG 0x06
+#define MOV_LIT_OFF_REG 0x07
 
 #define PUSH_LIT 0x17
 #define PUSH_REG 0x18

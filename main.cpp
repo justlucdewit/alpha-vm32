@@ -21,7 +21,7 @@ int main() {
         STOP,
     };
 
-    cpu.loadprogram(prog);
+    cpu.loadProgram(prog);
     cpu.run();
 
     return 0;

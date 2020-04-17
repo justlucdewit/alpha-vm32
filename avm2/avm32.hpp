@@ -28,14 +28,6 @@
 #define MOV_REG_PTR_REG 0x06
 #define MOV_LIT_OFF_REG 0x07
 
-#define PUSH_LIT 0x17
-#define PUSH_REG 0x18
-#define POP 0x1A
-
-#define CAL_LIT 0x5E
-#define CAL_REG 0x5F
-#define RET 0x70
-
 #define ADD_REG_REG 0x10
 #define ADD_LIT_REG 0x11
 #define SUB_REG_REG 0x12
@@ -47,7 +39,27 @@
 #define INC_REG 0x18
 #define DEC_REG 0x19
 
-#define JNE 0x20
+#define LSF_REG_LIT 0x20
+#define LSF_REG_REG 0x21
+#define RSF_REG_LIT 0x22
+#define RSF_REG_REG 0x23
+#define AND_REG_LIT 0x24
+#define AND_REG_REG 0x25
+#define OR_REG_LIT 0x26
+#define OR_REG_REG 0x27
+#define XOR_REG_LIT 0x28
+#define XOR_REG_REG 0x29
+#define NOT 0x2A
+
+#define JNE 0x30
+
+#define PUSH_LIT 0x47
+#define PUSH_REG 0x48
+#define POP 0x4A
+
+#define CAL_LIT 0x4E
+#define CAL_REG 0x4F
+#define RET 0x40
 
 #define STOP 0xFF
 
@@ -140,7 +152,7 @@ namespace AVM{
         std::vector<byte> memory;
         explicit CPU(MemoryMapper, int);
         void debug();
-        void loadprogram(std::vector<byte>&);
+        void loadProgram(std::vector<byte>&);
         void run();
         void runDebug();
     };

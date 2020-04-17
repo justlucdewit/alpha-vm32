@@ -162,21 +162,76 @@ void AVM::CPU::execute(byte instruction) {
             return;
         }
 
+        case LSF_REG_LIT: {
+            mem* reg = getRegister(fetchSingle());
+            *reg = (*reg) << fetchDouble();
+            return;
+        }
+
+        case LSF_REG_REG: {
+            mem* reg = getRegister(fetchSingle());
+            *reg = (*reg) << *getRegister(fetchSingle());
+            return;
+        }
+
+        case RSF_REG_LIT: {
+            mem* reg = getRegister(fetchSingle());
+            *reg = (*reg) >> fetchDouble();
+            return;
+        }
+
+        case RSF_REG_REG: {
+            mem* reg = getRegister(fetchSingle());
+            *reg = (*reg) >> *getRegister(fetchSingle());
+            return;
+        }
+
+        case AND_REG_LIT: {
+            acc = *getRegister(fetchSingle()) & fetchDouble();
+            return;
+        }
+
+        case AND_REG_REG: {
+            acc = *getRegister(fetchSingle()) & *getRegister(fetchSingle());
+            return;
+        }
+
+        case OR_REG_LIT: {
+            acc = *getRegister(fetchSingle()) | fetchDouble();
+            return;
+        }
+
+        case OR_REG_REG: {
+            acc = *getRegister(fetchSingle()) | *getRegister(fetchSingle());
+            return;
+        }
+
+        case XOR_REG_LIT: {
+            acc = *getRegister(fetchSingle()) ^ fetchDouble();
+            return;
+        }
+
+        case XOR_REG_REG: {
+            acc = *getRegister(fetchSingle()) ^ *getRegister(fetchSingle());
+            return;
+        }
+
+        case NOT: {
+            acc = ~*getRegister(fetchSingle());
+            return;
+        }
+
         case STOP: {
             stop = 1;
             return;
         }
 
         case JNE: {
-
             mem value = fetchDouble();
-            //std::cout << "\n!!going to " << value << " !!\n";
             if (value != acc){
                 mem adress = fetchDouble();
-
                 ip = adress-1;
             }
-
             return;
         }
 
@@ -269,7 +324,7 @@ void AVM::CPU::runDebug(){
     debug();
 }
 
-void AVM::CPU::loadprogram(std::vector<byte>& program){
+void AVM::CPU::loadProgram(std::vector<byte>& program){
     int i = 0;
     for (const auto& b : program){
         memory[i++] = b;

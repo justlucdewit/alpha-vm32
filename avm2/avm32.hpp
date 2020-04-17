@@ -51,7 +51,18 @@
 #define XOR_REG_REG 0x29
 #define NOT 0x2A
 
-#define JNE 0x30
+#define JNE_LIT 0x30
+#define JNE_REG 0x31
+#define JEQ_REG 0x32
+#define JEQ_LIT 0x33
+#define JLT_REG 0x34
+#define JLT_LIT 0x35
+#define JGT_REG 0x36
+#define JGT_LIT 0x37
+#define JLE_REG 0x38
+#define JLE_LIT 0x39
+#define JGE_REG 0x3A
+#define JGE_LIT 0x3B
 
 #define PUSH_LIT 0x47
 #define PUSH_REG 0x48
@@ -108,6 +119,7 @@ namespace AVM{
 
         char checkDevice(mem address, mem value){
             MemoryRegion region = findRegion(address);
+
             if (region.exist){
                 region.device->call(address, value);
             }

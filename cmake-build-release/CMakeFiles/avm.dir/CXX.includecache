@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/programming/cpp/avm/avm2/avm32.cpp
+avm32.hpp
+D:/programming/cpp/avm/avm2/avm32.hpp
+
+D:/programming/cpp/avm/avm2/avm32.hpp
+vector
+-
+iostream
+-
+iomanip
+-
+string
+-
+
+D:/programming/cpp/avm/avm32/avm32.cpp
+avm32.hpp
+D:/programming/cpp/avm/avm32/avm32.hpp
+
+D:/programming/cpp/avm/avm32/avm32.hpp
+iostream
+-
+vector
+-
+cmath
+-
+
+D:/programming/cpp/avm/main.cpp
+avm2/avm32.hpp
+D:/programming/cpp/avm/avm2/avm32.hpp
+cmath
+-
+

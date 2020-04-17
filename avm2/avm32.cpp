@@ -226,11 +226,110 @@ void AVM::CPU::execute(byte instruction) {
             return;
         }
 
-        case JNE: {
+        case JNE_LIT: {
             mem value = fetchDouble();
+            mem address = fetchDouble();
             if (value != acc){
-                mem adress = fetchDouble();
-                ip = adress-1;
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JNE_REG: {
+            mem reg = *getRegister(fetchSingle());
+            mem address = fetchDouble();
+            if (reg != acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JEQ_LIT: {
+            mem value = fetchDouble();
+            mem address = fetchDouble();
+            if (value == acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JEQ_REG: {
+            mem reg = *getRegister(fetchSingle());
+            mem address = fetchDouble();
+            if (reg == acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JLT_LIT: {
+            mem value = fetchDouble();
+            mem address = fetchDouble();
+            if (value < acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JLT_REG: {
+            mem reg = *getRegister(fetchSingle());
+            mem address = fetchDouble();
+            if (reg < acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JGT_LIT: {
+            mem value = fetchDouble();
+            mem address = fetchDouble();
+            if (value > acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JGT_REG: {
+            mem reg = *getRegister(fetchSingle());
+            mem address = fetchDouble();
+            if (reg > acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JLE_LIT: {
+            mem value = fetchDouble();
+            mem address = fetchDouble();
+            if (value <= acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JLE_REG: {
+            mem reg = *getRegister(fetchSingle());
+            mem address = fetchDouble();
+            if (reg <= acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JGE_LIT: {
+            mem value = fetchDouble();
+            mem address = fetchDouble();
+            if (value >= acc){
+                ip = address-1;
+            }
+            return;
+        }
+
+        case JGE_REG: {
+            mem reg = *getRegister(fetchSingle());
+            mem address = fetchDouble();
+            if (reg >= acc){
+                ip = address-1;
             }
             return;
         }

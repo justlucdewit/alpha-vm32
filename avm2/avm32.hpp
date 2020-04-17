@@ -36,10 +36,16 @@
 #define CAL_REG 0x5F
 #define RET 0x70
 
-#define ADD 0x10
-#define SUB 0x11
-#define MUL 0x12
-#define DIV 0x13
+#define ADD_REG_REG 0x10
+#define ADD_LIT_REG 0x11
+#define SUB_REG_REG 0x12
+#define SUB_LIT_REG 0x13
+#define MUL_REG_REG 0x14
+#define MUL_LIT_REG 0x15
+#define DIV_REG_REG 0x16
+#define DIV_LIT_REG 0x17
+#define INC_REG 0x18
+#define DEC_REG 0x19
 
 #define JNE 0x20
 

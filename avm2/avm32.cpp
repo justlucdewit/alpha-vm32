@@ -112,11 +112,53 @@ void AVM::CPU::execute(byte instruction) {
             *getRegister(fetchSingle()) = address;
         }
 
-        //add r1 and r2
-        case ADD: {
-            mem reg1 = *getRegister(fetchSingle());
-            mem reg2 = *getRegister(fetchSingle());
-            acc = reg1+reg2;
+        case ADD_REG_REG: {
+            acc = *getRegister(fetchSingle()) + *getRegister(fetchSingle());
+            return;
+        }
+
+        case ADD_LIT_REG: {
+            acc = fetchDouble() + *getRegister(fetchSingle());
+            return;
+        }
+
+        case SUB_REG_REG: {
+            acc = *getRegister(fetchSingle()) - *getRegister(fetchSingle());
+            return;
+        }
+
+        case SUB_LIT_REG: {
+            acc = fetchDouble() - *getRegister(fetchSingle());
+            return;
+        }
+
+        case MUL_REG_REG: {
+            acc = *getRegister(fetchSingle()) * *getRegister(fetchSingle());
+            return;
+        }
+
+        case MUL_LIT_REG: {
+            acc = fetchDouble() * *getRegister(fetchSingle());
+            return;
+        }
+
+        case DIV_REG_REG: {
+            acc = *getRegister(fetchSingle()) / *getRegister(fetchSingle());
+            return;
+        }
+
+        case DIV_LIT_REG: {
+            acc = fetchDouble() / *getRegister(fetchSingle());
+            return;
+        }
+
+        case INC_REG: {
+            ++*getRegister(fetchSingle());
+            return;
+        }
+
+        case DEC_REG: {
+            --*getRegister(fetchSingle());
             return;
         }
 
